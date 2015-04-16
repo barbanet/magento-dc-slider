@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Dc_Slider
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   Dc
+ * @package    Dc_Slider
+ * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Dc_Slider>
+            <version>1.0.0</version>
+        </Dc_Slider>
+    </modules>
+    <admin>
+        <routers>
+            <slider>
+                <use>admin</use>
+                <args>
+                    <module>Dc_Slider</module>
+                    <frontName>slider</frontName>
+                </args>
+            </slider>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Dc_Slider>
+                    <files>
+                        <default>Dc_Slider.csv</default>
+                    </files>
+                </Dc_Slider>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <slider>
+                    <file>dc/slider.xml</file>
+                </slider>
+            </updates>
+        </layout>
+    </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <slider>
+                    <file>dc/slider.xml</file>
+                </slider>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <models>
+            <slider>
+                <class>Dc_Slider_Model</class>
+                <resourceModel>slider_resource</resourceModel>
+            </slider>
+            <slider_resource>
+                <class>Dc_Slider_Model_Resource</class>
+                <entities>
+                    <slider>
+                        <table>dc_slider</table>
+                    </slider>
+                    <slider_store>
+                        <table>dc_slider_store</table>
+                    </slider_store>
+                </entities>
+            </slider_resource>
+        </models>
+        <resources>
+            <slider_setup>
+                <setup>
+                    <module>Dc_Slider</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </slider_setup>
+            <slider_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </slider_write>
+            <slider_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </slider_read>
+        </resources>
+        <blocks>
+            <slider>
+                <class>Dc_Slider_Block</class>
+            </slider>
+        </blocks>
+        <helpers>
+            <slider>
+                <class>Dc_Slider_Helper</class>
+            </slider>
+        </helpers>
+    </global>
+    <default>
+        <slider>
+            <options>
+                <folder>/cms/slider</folder>
+            </options>
+            <javascript>
+                <jquery>0</jquery>
+                <plugin>0</plugin>
+            </javascript>
+            <image>
+                <width>940</width>
+                <height>390</height>
+            </image>
+            <thumbnail>
+                <width>313</width>
+                <height>130</height>
+            </thumbnail>
+        </slider>
+    </default>
+</config>
