@@ -23,13 +23,13 @@
     </modules>
     <admin>
         <routers>
-            <slider>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Dc_Slider</module>
-                    <frontName>slider</frontName>
+                    <modules>
+                        <Dc_Slider after="Mage_Adminhtml">Dc_Slider_Adminhtml</Dc_Slider>
+                    </modules>
                 </args>
-            </slider>
+            </adminhtml>
         </routers>
     </admin>
     <adminhtml>

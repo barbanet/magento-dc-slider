@@ -21,13 +21,13 @@
             <action method="addCss"><name>dc/slider/css/style.css</name></action>
         </reference>
     </slider_default>
-    <slider_adminhtml_slider_index>
+    <adminhtml_slider_index>
         <update handle="slider_default" />
         <reference name="content">
             <block type="slider/adminhtml_slider" name="slider" />
         </reference>
-    </slider_adminhtml_slider_index>
-    <slider_adminhtml_slider_edit>
+    </adminhtml_slider_index>
+    <adminhtml_slider_edit>
         <update handle="slider_default" />
-    </slider_adminhtml_slider_edit>
+    </adminhtml_slider_edit>
 </layout>
