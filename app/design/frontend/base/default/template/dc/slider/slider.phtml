@@ -10,10 +10,11 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
+<?php $helper = Mage::helper('slider/image'); ?>
 <?php if ($slider_type == Dc_Slider_Model_System_Config_Source_Plugin::BXSLIDER): ?>
     <div class="bxslider-container">
         <ul class="bxslider">
@@ -22,7 +23,7 @@
                 <?php if ($slide->getUrl() != ""): ?>
                     <a href="<?php echo $slide->getUrl(); ?>">
                 <?php endif; ?>
-                <img width="<?php echo $width; ?>" src="<?php echo $this->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'media' . $slide->getFilename(); ?>" alt="<?php echo $slide->getName(); ?>" title="<?php echo $slide->getName(); ?>" />
+                <img width="<?php echo $width; ?>" src="<?php echo $this->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'media' . $helper->getImage($slide->getFilename(), $width, $height); ?>" alt="<?php echo $slide->getName(); ?>" title="<?php echo $slide->getName(); ?>" />
                 <?php if ($slide->getUrl() != ""): ?>
                     </a>
                 <?php endif; ?>
@@ -46,7 +47,7 @@
                     <?php if ($slide->getUrl() != ""): ?>
                     <a href="<?php echo $slide->getUrl(); ?>">
                         <?php endif; ?>
-                        <img width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="<?php echo $this->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'media' . $slide->getFilename(); ?>" alt="<?php echo $slide->getName(); ?>" />
+                        <img width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="<?php echo $this->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'media' . $helper->getImage($slide->getFilename(), $width, $height); ?>" alt="<?php echo $slide->getName(); ?>" />
                         <?php if ($slide->getUrl() != ""): ?>
                     </a>
                     <?php endif; ?>
