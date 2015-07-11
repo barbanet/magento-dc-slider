@@ -10,14 +10,12 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 class Dc_Slider_Block_Widget extends Mage_Core_Block_Template implements Mage_Widget_Block_Interface
 {
-    
-    protected $_items = array();
     
     protected function _construct()
     {
@@ -25,6 +23,9 @@ class Dc_Slider_Block_Widget extends Mage_Core_Block_Template implements Mage_Wi
         $this->setTemplate('dc/slider/slider.phtml');
     }
 
+    /**
+     * @return Dc_Slider_Model_Resource_Slider_Collection
+     */
     public function _getSlides()
     {
         $_slides = Mage::getModel('slider/slider')->getCollection()
@@ -41,7 +42,10 @@ class Dc_Slider_Block_Widget extends Mage_Core_Block_Template implements Mage_Wi
                         ->setOrder('position', 'asc');
         return $_slides;
     }
-    
+
+    /**
+     * @return string
+     */
     protected function _toHtml()
     {
         $this->assign('slider_type', Mage::app()->getStore()->getConfig('slider/javascript/plugin'));
