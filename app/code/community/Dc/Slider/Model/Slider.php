@@ -10,7 +10,7 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -20,12 +20,17 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
     /**
      * @var
      */
-    protected $_images_path;
+    protected $cache_path;
 
     /**
      * @var
      */
-    protected $_thumbnail_path;
+    protected $images_path;
+
+    /**
+     * @var
+     */
+    protected $thumbnail_path;
 
     public function _construct()
     {
@@ -37,14 +42,14 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
      * @param $path
      * @return bool
      */
-    private function _checkFolderExists($path)
+    private function checkFolderExists($path)
     {
         try {
-            $ioProxy = new Varien_Io_File();
-            $ioProxy->setAllowCreateFolders(true);
-            $ioProxy->open(array($path));
-            $ioProxy->close();
-            unset($ioProxy);
+            $io_proxy = new Varien_Io_File();
+            $io_proxy->setAllowCreateFolders(true);
+            $io_proxy->open(array($path));
+            $io_proxy->close();
+            unset($io_proxy);
             return true;
         } catch (Exception $e) {
             return false;
@@ -52,16 +57,31 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Returns slider cache directory
+     *
+     * @return string
+     */
+    private function getCachePath()
+    {
+        if (!$this->cache_path) {
+            $width = Mage::app()->getStore()->getConfig('slider/image/width');
+            $height = Mage::app()->getStore()->getConfig('slider/image/height');
+            $this->cache_path = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . Mage::app()->getStore()->getConfig('slider/options/folder') . DS . 'cache' . DS . $width . 'x' . $height . DS;
+        }
+        return $this->cache_path;
+    }
+
+    /**
      * Returns slider images directory
      *
      * @return string
      */
-    private function _getImagesPath()
+    private function getImagesPath()
     {
-        if (!$this->_images_path) {
-            $this->_images_path = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . Mage::app()->getStore()->getConfig('slider/options/folder') . DS;
+        if (!$this->images_path) {
+            $this->images_path = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . Mage::app()->getStore()->getConfig('slider/options/folder') . DS;
         }
-        return $this->_images_path;
+        return $this->images_path;
     }
 
     /**
@@ -69,12 +89,12 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    private function _getThumbnailsPath()
+    private function getThumbnailsPath()
     {
-        if (!$this->_thumbnail_path) {
-            $this->_thumbnail_path = $this->_getImagesPath() . 'thumbnails' . DS;
+        if (!$this->thumbnail_path) {
+            $this->thumbnail_path = $this->getImagesPath() . 'thumbnails' . DS;
         }
-        return $this->_thumbnail_path;
+        return $this->thumbnail_path;
     }
 
     /**
@@ -83,23 +103,23 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
      */
     public function createThumbnail($source)
     {
-        if (!is_file($this->_getImagesPath() . $source) || !is_readable($this->_getImagesPath() . $source)) {
+        if (!is_file($this->getImagesPath() . $source) || !is_readable($this->getImagesPath() . $source)) {
             return false;
         }
         $io = new Varien_Io_File();
-        if (!$io->isWriteable($this->_getThumbnailsPath())) {
-            $io->mkdir($this->_getThumbnailsPath());
+        if (!$io->isWriteable($this->getThumbnailsPath())) {
+            $io->mkdir($this->getThumbnailsPath());
         }
-        if (!$io->isWriteable($this->_getThumbnailsPath())) {
+        if (!$io->isWriteable($this->getThumbnailsPath())) {
             return false;
         }
         $image = Varien_Image_Adapter::factory('GD2');
-        $image->open($this->_getImagesPath() . $source);
+        $image->open($this->getImagesPath() . $source);
         $width = Mage::app()->getStore()->getConfig('slider/thumbnail/width');
         $height = Mage::app()->getStore()->getConfig('slider/thumbnail/height');
         $image->keepAspectRatio(true);
         $image->resize($width, $height);
-        $destination = $this->_getThumbnailsPath() . pathinfo($source, PATHINFO_BASENAME);
+        $destination = $this->getThumbnailsPath() . pathinfo($source, PATHINFO_BASENAME);
         $image->save($destination);
         if (is_file($destination)) {
             return $destination;
@@ -113,11 +133,12 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
      */
     public function deleteImage($image)
     {
-        if (!is_file($this->_getImagesPath() . pathinfo($image, PATHINFO_BASENAME)) || !is_readable($this->_getImagesPath() . pathinfo($image, PATHINFO_BASENAME))) {
+        if (!is_file($this->getImagesPath() . pathinfo($image, PATHINFO_BASENAME)) || !is_readable($this->getImagesPath() . pathinfo($image, PATHINFO_BASENAME))) {
             return false;
         }
-        @unlink($this->_getImagesPath()  . pathinfo($image, PATHINFO_BASENAME));
-        @unlink($this->_getThumbnailsPath() . pathinfo($image, PATHINFO_BASENAME));
+        @unlink($this->getImagesPath()  . pathinfo($image, PATHINFO_BASENAME));
+        @unlink($this->getCachePath()  . pathinfo($image, PATHINFO_BASENAME));
+        @unlink($this->getThumbnailsPath() . pathinfo($image, PATHINFO_BASENAME));
     }
 
     /**
@@ -127,8 +148,8 @@ class Dc_Slider_Model_Slider extends Mage_Core_Model_Abstract
     public function uploadImage($data)
     {
         if (isset($_FILES['filename']['name']) && $_FILES['filename']['name'] != '') {
-            $path = $this->_getImagesPath();
-            $this->_checkFolderExists($path);
+            $path = $this->getImagesPath();
+            $this->checkFolderExists($path);
             if (isset($data['filename']['value'])) {
                 $this->deleteImage($data['filename']['value']);
             }

@@ -10,7 +10,7 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -25,10 +25,10 @@ class Dc_Slider_Model_Resource_Slider_Collection extends Mage_Core_Model_Resourc
 
     /**
      * @param $store
-     * @param bool $withAdmin
+     * @param bool $with_admin
      * @return $this
      */
-    public function addStoreFilter($store, $withAdmin = true)
+    public function addStoreFilter($store, $with_admin = true)
     {
         if ($store instanceof Mage_Core_Model_Store) {
             $store = array($store->getId());
@@ -38,7 +38,7 @@ class Dc_Slider_Model_Resource_Slider_Collection extends Mage_Core_Model_Resourc
             'main_table.slider_id = store_table.slider_id',
             array()
         )
-        ->where('store_table.store_id in (?)', ($withAdmin ? array(0, $store) : $store))
+        ->where('store_table.store_id in (?)', ($with_admin ? array(0, $store) : $store))
         ->group('main_table.slider_id');
         return $this;
     }

@@ -10,7 +10,7 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
  
@@ -25,9 +25,9 @@ class Dc_Slider_Block_Adminhtml_Renderer_Image extends Mage_Adminhtml_Block_Widg
     protected function _getContent(Varien_Object $row)
     {
         $slide = null;
-        $_filename = 'thumbnails' . DS . pathinfo($row->filename, PATHINFO_BASENAME);
-        $_path_slider = Mage::app()->getStore()->getConfig('slider/options/folder') . DS;
-        $slide = $row->filename != '' ? '<img src="' . Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $_path_slider . $_filename.'" alt="" />' : '';
+        $filename = 'thumbnails' . DS . pathinfo($row->filename, PATHINFO_BASENAME);
+        $path_slider = Mage::app()->getStore()->getConfig('slider/options/folder') . DS;
+        $slide = $row->filename != '' ? '<img src="' . Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $path_slider . $filename.'" alt="" />' : '';
         return $slide;
     }
 

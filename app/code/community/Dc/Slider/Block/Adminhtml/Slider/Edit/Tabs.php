@@ -10,7 +10,7 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -25,10 +25,12 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tabs extends Mage_Adminhtml_Block_Wi
         $this->setTitle(Mage::helper('slider')->__('Slider Information'));
     }
 
+    /*
     protected function _prepareLayout()
     {
         return parent::_prepareLayout();
     }
+    */
 
     protected function _beforeToHtml()
     {
