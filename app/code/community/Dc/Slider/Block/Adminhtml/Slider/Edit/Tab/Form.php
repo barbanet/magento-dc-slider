@@ -10,7 +10,7 @@
  *
  * @category   Dc
  * @package    Dc_Slider
- * @copyright  Copyright (c) 2015 Damián Culotta. (http://www.damianculotta.com.ar/)
+ * @copyright  Copyright (c) 2009-2015 Damián Culotta. (http://www.damianculotta.com.ar/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -19,9 +19,6 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
 
     protected function _prepareForm()
     {
-
-        $model = Mage::registry('slider_data');
-
         $form = new Varien_Data_Form();
         $this->setForm($form);
         $fieldset = $form->addFieldset('slider_form', array('legend'=>Mage::helper('slider')->__('Slide information')));
@@ -50,8 +47,8 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
             ));
             $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
             $field->setRenderer($renderer);
-        }
-        else {
+        } else {
+            $model = Mage::registry('slider_data');
             $fieldset->addField('store_id', 'hidden', array(
                 'name'      => 'stores[]',
                 'value'     => Mage::app()->getStore(true)->getId()
@@ -65,11 +62,11 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
             'name'      => 'status',
             'values'    => array(
                                 array(
-                                        'value' => 1,
+                                        'value' => Dc_Slider_Model_Status::STATUS_ENABLED,
                                         'label' => Mage::helper('slider')->__('Enabled'),
                                     ),
                                 array(
-                                        'value' => 2,
+                                        'value' => Dc_Slider_Model_Status::STATUS_DISABLED,
                                         'label' => Mage::helper('slider')->__('Disabled'),
                                     ),
                                 ),
@@ -86,12 +83,14 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
             'name'      => 'url',
         ));
 
+        $date_format = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+
         $fieldset->addField('from_date', 'date', array(
             'label'     => Mage::helper('slider')->__('From'),
             'name'      => 'from_date',
             'image'     => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
-            'format'    => 'dd/MM/yyyy'
+            'format'    => $date_format
         ));
 
         $fieldset->addField('to_date', 'date', array(
@@ -99,7 +98,7 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
             'name'      => 'to_date',
             'image'     => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATE_INTERNAL_FORMAT,
-            'format'    => 'dd/MM/yyyy'
+            'format'    => $date_format
         ));
         
         if (Mage::getSingleton('adminhtml/session')->getSliderData()) {
@@ -108,6 +107,7 @@ class Dc_Slider_Block_Adminhtml_Slider_Edit_Tab_Form extends Mage_Adminhtml_Bloc
         } elseif (Mage::registry('slider_data')) {
             $form->setValues(Mage::registry('slider_data')->getData());
         }
+
         return parent::_prepareForm();
     }
 
