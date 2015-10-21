@@ -1,0 +1,9 @@
+{
+    "name": "barbanet/magento-dc-slider",
+    "description": "Magento dc slider",
+    "license": "MIT",
+    "type":"magento-module",
+    "authors": [{
+        "name": "Damián Culotta"
+    }]
+}
